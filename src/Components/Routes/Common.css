@@ -1,0 +1,9 @@
+.nav-link {
+    font-weight: bold;
+    text-decoration: none;
+  }
+  
+  .active-link {
+    color: #F81894;
+    text-decoration: underline;
+  }
