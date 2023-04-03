@@ -48,7 +48,7 @@ const SignupPage = () => {
         nav("/");
       })
       .catch((error) => {
-        console.log(error);
+        console.log(error.response.data);
       });
   };
 

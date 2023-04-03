@@ -4,13 +4,14 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import OtherLogins from "../Logins.js/OtherLogins";
 
 import "../Routes/Common.css";
+import axios from "axios";
 
 const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleUsernameChange = (event) => {
-    setUsername(event.target.value);
+    setMail(event.target.value);
   };
 
   const handlePasswordChange = (event) => {
@@ -20,7 +21,22 @@ const LoginPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(`Username: ${username}, Password: ${password}`);
+    axios
+      .post(
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAvrIJNEDBFnzModMU9vUQdbpwNQAQDUFM`,
+        {
+          email: mail,
+          password: password,
+          returnSecureToken: true,
+        }
+      )
+      .then((response) => {
+        console.log(response.data);
+        alert("welcome");
+      })
+      .catch((err) => {
+        console.log(err.response.data);
+      });
   };
 
   const location = useLocation();
@@ -71,10 +87,10 @@ const LoginPage = () => {
           <Form onSubmit={handleSubmit}>
             <Form.Group controlId="formUsername">
               <Form.Control
-                type="text"
+                type="email"
                 style={{ marginTop: "15px", borderRadius: "30px" }}
-                placeholder="Username"
-                value={username}
+                placeholder="e-mail"
+                value={mail}
                 onChange={handleUsernameChange}
               />
             </Form.Group>
