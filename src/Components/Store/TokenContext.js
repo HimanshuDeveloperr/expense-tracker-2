@@ -9,7 +9,7 @@ const TokenContext=React.createContext({
     logout:()=>{}
 })
 
-export const TokenContesxtProvider=(props)=>{
+export const TokenContextProvider=(props)=>{
 
     const initialToken=localStorage.getItem("token")
     const [token,setToken]=useState(initialToken)
@@ -34,7 +34,7 @@ export const TokenContesxtProvider=(props)=>{
         
     }
 
-    return <TokenContesxt.Provider value={value}>{props.children}</TokenContesxt.Provider>
+    return <TokenContext.Provider value={value}>{props.children}</TokenContext.Provider>
 }
 
 export default TokenContext;
