@@ -1,10 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink } from 'react-router-dom';
 import styles from './Home.module.css'
+import { Button } from 'react-bootstrap';
+import TokenContext from '../Store/TokenContext';
 
 const Home = () => {
+
+  const ctx=useContext(TokenContext)
+  const logoutHandler=()=>{
+    ctx.logout()
+  }
   return (
     <div>
       <Navbar className={styles.mynavbar}>
@@ -18,9 +25,11 @@ const Home = () => {
                 complete now
               </NavLink>
             </Navbar.Text>
+            <Button className='m-2' variant='danger' onClick={logoutHandler}>logout</Button>
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
       
     </div>
   );
