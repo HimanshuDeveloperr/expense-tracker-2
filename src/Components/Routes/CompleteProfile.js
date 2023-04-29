@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect,useState } from "react";
 import { useRef } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
@@ -12,7 +12,21 @@ const CompleteProfile = () => {
   const photo = useRef();
 
   const authctx = useContext(TokenContext);
+  const [userProfile, setUserProfile] = useState({});
 
+  useEffect(()=>{
+    const fetchUserProfile= async ()=>{
+
+      const response = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBbbWhkFyupe0V-FKdHL-ieJmYuExSBufo`,{
+        idToken: authctx.token
+      })
+
+      console.log(response.data)
+      const userProfileData = response.data.users[0];
+      setUserProfile(userProfileData)
+    }
+    fetchUserProfile()
+  },[authctx.token])
   const SubmitHandler = (e) => {
     e.preventDefault();
 
@@ -21,6 +35,7 @@ const CompleteProfile = () => {
 
     const token = authctx.token;
     console.log(token);
+
 
     axios
       .post(
@@ -40,31 +55,35 @@ const CompleteProfile = () => {
       });
   };
   return (
-    <div>
-      <Navbar style={{ backgroundColor: "#2b2d42", color: "#fff" }}>
-        <Container>
-          <Navbar.Brand href="#home">
-            winners never quit, quitters never win
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
-            <Navbar.Text>
-              <span style={{ marginRight: "1rem" }}>
-                your profile is incomplete{" "}
-              </span>
-              <NavLink
-                to="/complete"
-                style={{
-                  color: "#fff",
-                  textDecoration: "underline",
-                  fontWeight: "bold",
-                }}
-              >
-                complete now
-              </NavLink>
-            </Navbar.Text>
-          </Navbar.Collapse>
-        </Container>
+    <div> <Navbar style={{ backgroundColor: "#2b2d42", color: "#fff" }}>
+    <Container>
+      <Navbar.Brand href="#home">
+        winners never quit, quitters never win
+      </Navbar.Brand>
+      <Navbar.Toggle />
+      <Navbar.Collapse className="justify-content-end">
+        <Navbar.Text>
+          <span style={{ marginRight: "1rem" }}>
+            {userProfile.displayName ? (
+              `Welcome, ${userProfile.displayName}`
+            ) : (
+              "Your profile is incomplete"
+            )}
+          </span>
+          
+          <NavLink
+            to="/complete"
+            style={{
+              color: "#fff",
+              textDecoration: "underline",
+              fontWeight: "bold",
+            }}
+          >
+            {userProfile.displayName ? "completed" : "Complete now"}
+          </NavLink>
+        </Navbar.Text>
+      </Navbar.Collapse>
+    </Container>
       </Navbar>
       <hr style={{ margin: "2rem 0", borderColor: "#2b2d42" }} />
       <div style={{ textAlign: "left" }}>
@@ -93,6 +112,7 @@ const CompleteProfile = () => {
                 aria-label="First name"
                 placeholder="your name"
                 ref={fullname}
+                defaultValue={userProfile.displayName}
                 type="text"
                 style={{ width: "60%", display: "inline-block" }}
               />
@@ -108,6 +128,7 @@ const CompleteProfile = () => {
                 aria-label="First name"
                 placeholder="profile photo URL"
                 ref={photo}
+                defaultValue={userProfile.photoUrl}
                 type="url"
                 style={{ width: "60%", display: "inline-block" }}
               />
