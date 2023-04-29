@@ -1,6 +1,7 @@
 import axios from "axios";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useContext } from "react";
 import { Form, Button, Container } from "react-bootstrap";
+import TokenContext from "../Store/TokenContext";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
@@ -11,6 +12,7 @@ const SignupPage = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
 
   const nav = useNavigate();
+  const authctx = useContext(TokenContext);
 
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
@@ -45,7 +47,11 @@ const SignupPage = () => {
       )
       .then((response) => {
         console.log(response.data);
-        nav("/");
+        const token = response.data.idToken;
+        console.log(token);
+        localStorage.setItem("email", response.data.email);
+        authctx.login(token);
+        nav("/verifyemail");
       })
       .catch((error) => {
         console.log(error.response.data);

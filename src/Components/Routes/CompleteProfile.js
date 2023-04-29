@@ -70,7 +70,7 @@ const CompleteProfile = () => {
               "Your profile is incomplete"
             )}
           </span>
-          
+           
           <NavLink
             to="/complete"
             style={{
