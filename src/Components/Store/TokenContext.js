@@ -1,40 +1,40 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 
+const TokenContext = React.createContext({
+  token: "",
+  isLoggedIn: false,
+  login: (token) => {},
+  logout: () => {},
+});
 
+export const TokenContextProvider = (props) => {
+  const initialToken = localStorage.getItem("token");
+  const [token, setToken] = useState(initialToken);
 
-const TokenContext=React.createContext({
-    token:"",
-    isLoggedIn:false,
-    login:(token)=>{},
-    logout:()=>{}
-})
+  const userIsLoggedIn = !!token;
 
-export const TokenContextProvider=(props)=>{
+  const loginHandler = (token) => {
+    setToken(token);
+    localStorage.setItem("token", token);
+  };
 
-    const initialToken=localStorage.getItem("token")
-    const [token,setToken]=useState(initialToken)
+  const logoutHandler = () => {
+    setToken(null);
+    localStorage.removeItem("token");
+  };
 
-    const userIsLoggedIn=!!token;
+  const value = {
+    token: token,
+    isLoggedIn: userIsLoggedIn,
+    login: loginHandler,
+    logout: logoutHandler,
+  };
 
-    const  loginHandler=(token)=>{
-        setToken(token)
-        localStorage.setItem("token",token)
-    }
-
-    const logoutHandler=()=>{
-        setToken(null)
-        localStorage.removeItem("token")
-    }
-
-    const value={
-        token:token,
-        isLoggedIn:userIsLoggedIn,
-        login:loginHandler,
-        logout:logoutHandler,
-        
-    }
-
-    return <TokenContext.Provider value={value}>{props.children}</TokenContext.Provider>
-}
+  return (
+    <TokenContext.Provider value={value}>
+      {props.children}
+    </TokenContext.Provider>
+  );
+};
 
 export default TokenContext;

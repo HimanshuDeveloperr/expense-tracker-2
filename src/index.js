@@ -4,10 +4,14 @@ import './index.css';
 import App from './App';
 import '../node_modules/react-bootstrap/dist/react-bootstrap'
 import '../node_modules/bootstrap/dist/css/bootstrap.css'
+import { TokenContextProvider } from './Components/Store/TokenContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <App />
+    <TokenContextProvider>
+
+        <App />
+    </TokenContextProvider>
 
 );
 

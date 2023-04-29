@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useContext } from "react";
+import React, { Fragment, useState, useContext } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import OtherLogins from "../Logins.js/OtherLogins";
@@ -11,9 +11,9 @@ const LoginPage = () => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
-  const authctx=useContext(TokenContext)
+  const authctx = useContext(TokenContext);
 
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   const handleUsernameChange = (event) => {
     setMail(event.target.value);
@@ -38,9 +38,11 @@ const LoginPage = () => {
       .then((response) => {
         console.log(response.data);
         // alert("welcome");
-        localStorage.setItem("email",response.data.email)
-        authctx.login(response.data.idToken)
-        navigate('/home')   
+        const token = response.data.idToken;
+        console.log(token);
+        localStorage.setItem("email", response.data.email);
+        authctx.login(token);
+        navigate("/home");
       })
       .catch((err) => {
         console.log(err.response.data);

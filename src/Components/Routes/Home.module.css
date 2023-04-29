@@ -1,0 +1,19 @@
+.mynavbar {
+    background-color: #fff;
+    border-bottom: 1px solid #ccc;
+  }
+  
+  .mynavlink {
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  .mynavlink:hover {
+    text-decoration: underline;
+  }
+
+  
+  
+  
+  
+  
