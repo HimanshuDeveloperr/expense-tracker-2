@@ -1,7 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useContext } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import OtherLogins from "../Logins.js/OtherLogins";
+import TokenContext from "../Store/TokenContext";
 
 import "../Routes/Common.css";
 import axios from "axios";
@@ -9,6 +10,8 @@ import axios from "axios";
 const LoginPage = () => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
+
+  const authctx=useContext(TokenContext)
 
   const handleUsernameChange = (event) => {
     setMail(event.target.value);
@@ -31,9 +34,10 @@ const LoginPage = () => {
         }
       )
       .then((response) => {
-        console.log(response.data.idToken);
+        console.log(response.data);
         alert("welcome");
         localStorage.setItem("email",response.data.email)
+        authctx.login(response.data.idToken)
       })
       .catch((err) => {
         console.log(err.response.data);
