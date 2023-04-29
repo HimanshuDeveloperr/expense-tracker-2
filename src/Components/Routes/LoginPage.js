@@ -23,7 +23,7 @@ const LoginPage = () => {
 
     axios
       .post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAvrIJNEDBFnzModMU9vUQdbpwNQAQDUFM`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyBbbWhkFyupe0V-FKdHL-ieJmYuExSBufo`,
         {
           email: mail,
           password: password,
@@ -31,8 +31,9 @@ const LoginPage = () => {
         }
       )
       .then((response) => {
-        console.log(response.data);
+        console.log(response.data.idToken);
         alert("welcome");
+        localStorage.setItem("email",response.data.email)
       })
       .catch((err) => {
         console.log(err.response.data);

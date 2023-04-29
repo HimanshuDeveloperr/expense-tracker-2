@@ -36,7 +36,7 @@ const SignupPage = () => {
     }
     axios
       .post(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyAvrIJNEDBFnzModMU9vUQdbpwNQAQDUFM`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyBbbWhkFyupe0V-FKdHL-ieJmYuExSBufo`,
         {
           email: email,
           password: password,
