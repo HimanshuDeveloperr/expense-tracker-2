@@ -126,7 +126,8 @@ const LoginPage = () => {
               Login
             </Button>
             <div>
-              <Link
+              <NavLink
+              to='/forgot'
                 style={{
                   textDecoration: "none",
                   color: "#F81894",
@@ -135,7 +136,7 @@ const LoginPage = () => {
                 }}
               >
                 Forgot Password?
-              </Link>
+              </NavLink>
             </div>
             <div>
               <OtherLogins></OtherLogins>
