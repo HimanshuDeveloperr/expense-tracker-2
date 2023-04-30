@@ -1,0 +1,33 @@
+.expenses-list__items {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.expenses-list__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  margin-bottom: 1rem; /* add margin between list items */
+}
+
+.expenses-list__item-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  margin-right: 2rem;
+}
+
+.expenses-list__item-date {
+  font-size: 1.2rem;
+  color: #888;
+  margin-right: 1rem;
+}
+
+.expenses-list__item-amount {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: #2c3e50;
+}

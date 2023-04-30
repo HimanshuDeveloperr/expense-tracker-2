@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
 import TokenContext from "../Store/TokenContext";
 
@@ -13,7 +13,7 @@ const CompleteProfile = () => {
 
   const authctx = useContext(TokenContext);
   const [userProfile, setUserProfile] = useState({});
-
+    const navigate=useNavigate()
   useEffect(()=>{
     const fetchUserProfile= async ()=>{
 
@@ -24,6 +24,7 @@ const CompleteProfile = () => {
       console.log(response.data)
       const userProfileData = response.data.users[0];
       setUserProfile(userProfileData)
+      // Navigate('/expenses')
     }
     fetchUserProfile()
   },[authctx.token])
@@ -49,6 +50,7 @@ const CompleteProfile = () => {
       .then((res) => {
         console.log(res.data);
         alert("updates successfully");
+        navigate('/complete')
       })
       .catch((err) => {
         console.log(err);
@@ -79,7 +81,7 @@ const CompleteProfile = () => {
               fontWeight: "bold",
             }}
           >
-            {userProfile.displayName ? "completed" : "Complete now"}
+            {userProfile.displayName ? <NavLink to='/expenses' variant="warning">Expenses</NavLink> : "Complete now"}
           </NavLink>
         </Navbar.Text>
       </Navbar.Collapse>

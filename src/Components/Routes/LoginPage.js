@@ -1,8 +1,8 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useState,useContext } from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import {  NavLink, useLocation, useNavigate } from "react-router-dom";
 import OtherLogins from "../Logins.js/OtherLogins";
-// import TokenContext from "../Store/TokenContext";
+import TokenContext from "../Store/TokenContext";
 
 import "../Routes/Common.css";
 import axios from "axios";
@@ -11,7 +11,7 @@ const LoginPage = () => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
 
-  // const authctx = useContext(TokenContext);
+  const authctx = useContext(TokenContext); 
 
   const navigate = useNavigate();
 
@@ -37,11 +37,11 @@ const LoginPage = () => {
       )
       .then((response) => {
         console.log(response.data);
-        // alert("welcome");
-        // const token = response.data.idToken;
-        // console.log(token);
-        // localStorage.setItem("email", response.data.email);
-        // authctx.login(token);
+        alert("welcome");
+        const token = response.data.idToken;
+        console.log(token);
+        localStorage.setItem("email", response.data.email);
+        authctx.login(token);
         navigate("/home");
         
       })

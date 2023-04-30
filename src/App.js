@@ -6,6 +6,7 @@ import Home from "./Components/Routes/Home";
 import CompleteProfile from "./Components/Routes/CompleteProfile";
 import VerifyEmail from "./Components/Routes/VerifyEmail";
 import Forgot from "./Components/Routes/Forgot";
+import Expenses from "./Components/Routes/Expenses";
 
 const router = createBrowserRouter([
   { path: "/", element: <LoginPage></LoginPage> },
@@ -13,7 +14,8 @@ const router = createBrowserRouter([
   { path: "/home", element: <Home></Home> },
   { path: "/complete", element: <CompleteProfile /> },
   {path:'/verifyemail',element:<VerifyEmail/>},
-  {path:'/forgot',element:<Forgot/>}
+  {path:'/forgot',element:<Forgot/>},
+  {path:'/expenses',element:<Expenses/>}
 ]);
 function App() {
   return (
