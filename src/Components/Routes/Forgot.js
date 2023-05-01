@@ -24,6 +24,7 @@ const Forgot = () => {
       alert('Link sent successfully');
       alert('Check your email inbox and reset password');
       history('/');
+      console.log(res)
     } catch (e) {
       alert(e.response.data.error.message);
     }
