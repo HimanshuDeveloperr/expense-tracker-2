@@ -9,6 +9,15 @@ const Expenses = () => {
   const categoryref = useRef();
   const descriptionref = useRef();
 
+
+const deleteHandler=(id)=>{
+  axios.delete(`https://expense-tracker-2-eed66-default-rtdb.firebaseio.com/expenses/${id}.json`).then((res)=>{
+    setExpenses((prevExpenses)=>{
+      return prevExpenses.filter((expense)=>expense.id !== id)
+    })
+  })
+}
+
   useEffect(() => {
     axios
       .get(`https://expense-tracker-2-eed66-default-rtdb.firebaseio.com/expenses.json`)
@@ -74,7 +83,7 @@ const Expenses = () => {
         <input type="submit" value="Submit" />
       </form>
       <div>
-        <ExpensesList expenses={expenses} />
+        <ExpensesList expenses={expenses} onDelete={deleteHandler} />
       </div>
     </div>
   );
