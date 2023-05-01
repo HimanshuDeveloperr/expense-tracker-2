@@ -1,51 +1,54 @@
-import React, { useRef, useState } from 'react'
-import './Expenses.css'
-import ExpensesList from './ExpensesList';
-
-// const expenses = [
-//   {
-//     id: 'e1',
-//     title: 'Groceries',
-//     amount: 124.56,
-//     date: new Date(2022, 3, 20)
-//   },
-//   {
-//     id: 'e2',
-//     title: 'Gasoline',
-//     amount: 50.00,
-//     date: new Date(2022, 3, 23)
-//   },
-//   {
-//     id: 'e3',
-//     title: 'Movie tickets',
-//     amount: 35.00,
-//     date: new Date(2022, 4, 2)
-//   }
-// ];
-
+import React, { useEffect, useRef, useState } from "react";
+import "./Expenses.css";
+import ExpensesList from "./ExpensesList";
+import axios from "axios";
 
 const Expenses = () => {
+  const [expenses, setExpenses] = useState([]);
+  const moneyref = useRef();
+  const categoryref = useRef();
+  const descriptionref = useRef();
 
-  const [expenses,setExpenses]=useState([])
-  const moneyref=useRef()
-  const categoryref=useRef()
-  const descriptionref=useRef()
-
-  const submitHandler=(e)=>{
-    e.preventDefault()
-
-      const details={
-        id:Math.random(),
-        description:descriptionref.current.value,
-        category:categoryref.current.value,
-        money:moneyref.current.value
-      }
-
-      setExpenses((prevdetails)=>{
-        return [...prevdetails,details]
+  useEffect(() => {
+    axios
+      .get(`https://expense-tracker-2-eed66-default-rtdb.firebaseio.com/expenses.json`)
+      .then((res) => {
+        const loadedExpenses = [];
+        for (const key in res.data) {
+          loadedExpenses.push({ id: key, ...res.data[key] });
+        }
+        setExpenses(loadedExpenses);
       })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
-  }
+  const submitHandler = (e) => {
+    e.preventDefault();
+
+    const details = {
+      // id:Math.random(),
+      description: descriptionref.current.value,
+      category: categoryref.current.value,
+      money: moneyref.current.value,
+    };
+
+    axios
+      .post(
+        `https://expense-tracker-2-eed66-default-rtdb.firebaseio.com/expenses.json`,
+        details
+      )
+      .then((res) => {
+        setExpenses((prevdetails) => {
+          return [...prevdetails, { id: res.data.name, ...details }];
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  
   return (
     <div className="container">
       <form onSubmit={submitHandler}>
@@ -53,7 +56,12 @@ const Expenses = () => {
         <input type="text" id="money" name="money" ref={moneyref} />
 
         <label htmlFor="description">Expense Description:</label>
-        <input type="text" id="description" name="description" ref={descriptionref} />
+        <input
+          type="text"
+          id="description"
+          name="description"
+          ref={descriptionref}
+        />
 
         <label htmlFor="category">Expense Category:</label>
         <select id="category" name="category" ref={categoryref}>
@@ -66,10 +74,10 @@ const Expenses = () => {
         <input type="submit" value="Submit" />
       </form>
       <div>
-        <ExpensesList expenses={expenses}/>
+        <ExpensesList expenses={expenses} />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Expenses
+export default Expenses;
