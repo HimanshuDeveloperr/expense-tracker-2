@@ -1,17 +1,21 @@
-import React, { Fragment, useState,useContext } from "react";
+import React, { Fragment, useState} from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import {  NavLink, useLocation, useNavigate } from "react-router-dom";
 import OtherLogins from "../Logins.js/OtherLogins";
-import TokenContext from "../Store/TokenContext";
+// import TokenContext from "../Store/TokenContext";
 
 import "../Routes/Common.css";
 import axios from "axios";
+import { AuthActions } from "../ReduxStore/AuthReducer";
+import { useDispatch } from "react-redux";
+
 
 const LoginPage = () => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch=useDispatch()
 
-  const authctx = useContext(TokenContext); 
+  // const authctx = useContext(TokenContext); 
 
   const navigate = useNavigate();
 
@@ -41,7 +45,8 @@ const LoginPage = () => {
         const token = response.data.idToken;
         console.log(token);
         localStorage.setItem("email", response.data.email);
-        authctx.login(token);
+        // authctx.login(token);
+        dispatch(AuthActions.login(token))
         navigate("/home");
         
       })

@@ -1,17 +1,20 @@
 import axios from 'axios';
-import React, { useContext } from 'react'
+// import React, { useContext } from 'react'
 import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
-import TokenContext from '../Store/TokenContext';
+// import TokenContext from '../Store/TokenContext';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 const VerifyEmail = () => {
-    const token=useContext(TokenContext)
+    // const token=useContext(TokenContext)
     const navigate=useNavigate()
+   const idToken= useSelector(state=>state.auth.idToken)
+    
     const emailConfirmationHandler=()=>{
 
         axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:sendOobCode?key=AIzaSyBbbWhkFyupe0V-FKdHL-ieJmYuExSBufo`,{
             requestType:"VERIFY_EMAIL",
-            idToken:token.token
+            idToken:idToken
         }).then((res)=>{
             console.log(res.data)
             alert('Please Check your Inbox and Verify email adress')

@@ -1,48 +1,51 @@
-import React, { useContext, useEffect,useState } from "react";
+import React, {useEffect,useState } from "react";
 import { useRef } from "react";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import Container from "react-bootstrap/Container";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-import TokenContext from "../Store/TokenContext";
+import { useSelector } from 'react-redux';
+
+// import TokenContext from "../Store/TokenContext";
 
 const CompleteProfile = () => {
   const fullname = useRef();
   const photo = useRef();
+  const idToken= useSelector(state=>state.auth.idToken)
 
-  const authctx = useContext(TokenContext);
+  // const authctx = useContext(TokenContext);
   const [userProfile, setUserProfile] = useState({});
     const navigate=useNavigate()
   useEffect(()=>{
     const fetchUserProfile= async ()=>{
 
       const response = await axios.post(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=AIzaSyBbbWhkFyupe0V-FKdHL-ieJmYuExSBufo`,{
-        idToken: authctx.token
+        idToken: localStorage.getItem('token')
       })
-
+      console.log(idToken)
       console.log(response.data)
       const userProfileData = response.data.users[0];
       setUserProfile(userProfileData)
       // Navigate('/expenses')
     }
     fetchUserProfile()
-  },[authctx.token])
+  },[idToken])
   const SubmitHandler = (e) => {
     e.preventDefault();
 
     const yourname = fullname.current.value;
     const photoURL = photo.current.value;
 
-    const token = authctx.token;
-    console.log(token);
+    // const token = authctx.token;
+    // console.log(token);
 
 
     axios
       .post(
         `https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyBbbWhkFyupe0V-FKdHL-ieJmYuExSBufo`,
         {
-          idToken: token,
+          idToken: idToken,
           displayName: yourname,
           photoUrl: photoURL,
         }

@@ -1,16 +1,21 @@
-import React, { useContext } from 'react';
+// import React, { useContext } from 'react';
 import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import styles from './Home.module.css'
 import { Button } from 'react-bootstrap';
-import TokenContext from '../Store/TokenContext';
+// import TokenContext from '../Store/TokenContext';
+import { useDispatch } from 'react-redux';
+import { AuthActions } from '../ReduxStore/AuthReducer';
 
 const Home = () => {
 
-  const ctx=useContext(TokenContext)
+  // const ctx=useContext(TokenContext)
+  const navigate=useNavigate()
+  const dispatch=useDispatch()
   const logoutHandler=()=>{
-    ctx.logout()
+    dispatch(AuthActions.logout())
+    navigate('/')
   }
   return (
     <div>

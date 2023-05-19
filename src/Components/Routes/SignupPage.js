@@ -1,7 +1,9 @@
 import axios from "axios";
-import React, { Fragment, useState,useContext } from "react";
+import React, { Fragment, useState} from "react";
 import { Form, Button, Container } from "react-bootstrap";
-import TokenContext from "../Store/TokenContext";
+// import TokenContext from "../Store/TokenContext";
+import { useDispatch } from "react-redux";
+import { AuthActions } from "../ReduxStore/AuthReducer";
 
 import { NavLink, useNavigate, useLocation } from "react-router-dom";
 
@@ -10,9 +12,10 @@ const SignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+ const dispatch=useDispatch()
 
   const nav = useNavigate();
-  const authctx = useContext(TokenContext);
+  // const authctx = useContext(TokenContext);
 
   const handleConfirmPasswordChange = (event) => {
     setConfirmPassword(event.target.value);
@@ -50,7 +53,8 @@ const SignupPage = () => {
         const token = response.data.idToken;
         console.log(token);
         localStorage.setItem("email", response.data.email);
-        authctx.login(token);
+        // authctx.login(token);
+        dispatch(AuthActions.login(token))
         nav("/verifyemail");
       })
       .catch((error) => {
