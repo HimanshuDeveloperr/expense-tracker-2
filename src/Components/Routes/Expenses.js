@@ -12,6 +12,7 @@ const Expenses = () => {
   const dispatch=useDispatch()
 
   const expenses=useSelector(state=>state.expense.Expenses)
+  const total=useSelector(state=>state.expense.total)
 
   const saveHandler=(newexpense)=>{
 
@@ -106,6 +107,7 @@ const deleteHandler=(id)=>{
       <div>
         <ExpensesList expenses={expenses} onDelete={deleteHandler} onEdit={saveHandler} />
       </div>
+      {total > 10000 && <button className="btn btn-success">Activate Premium</button>}
     </div>
   );
 };

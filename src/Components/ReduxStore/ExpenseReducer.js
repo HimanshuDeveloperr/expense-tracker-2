@@ -12,9 +12,18 @@ const ExpenseSlice= createSlice({
 
         setExpenses (state,action) {
             state.Expenses=action.payload
+            state.total=calculateTotal(action.payload)
         }
     }
 })
+
+const calculateTotal = (expenses) => {
+    let total = 0;
+    expenses.forEach((expense) => {
+      total += parseFloat(expense.money);
+    });
+    return total;
+  };
 
 
 export const ExpenseActions=ExpenseSlice.actions;
