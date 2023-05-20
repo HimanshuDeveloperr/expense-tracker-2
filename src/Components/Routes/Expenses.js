@@ -1,27 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef} from "react";
 import "./Expenses.css";
 import ExpensesList from "./ExpensesList";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { ExpenseActions } from "../ReduxStore/ExpenseReducer";
 
 const Expenses = () => {
-  const [expenses, setExpenses] = useState([]);
   const moneyref = useRef();
   const categoryref = useRef();
   const descriptionref = useRef();
+  const dispatch=useDispatch()
 
+  const expenses=useSelector(state=>state.expense.Expenses)
 
   const saveHandler=(newexpense)=>{
 
     axios.put(`https://expense-tracker-2-eed66-default-rtdb.firebaseio.com/expenses/${newexpense.id}.json`,newexpense)
     .then(
       (res)=>{
-        setExpenses((prevExpenses)=>{
-          const index=prevExpenses.findIndex((expense)=>expense.id===newexpense.id)
+        const updatedExpenses = expenses.map((expense) =>
+          expense.id === newexpense.id ? newexpense : expense
+        );
+    dispatch(ExpenseActions.setExpenses(updatedExpenses))
 
-          const updatedExpense=[...prevExpenses]
-          updatedExpense[index]=newexpense
-          return updatedExpense
-        })
         
       }
     ).catch((err)=>{
@@ -31,9 +32,9 @@ const Expenses = () => {
 
 const deleteHandler=(id)=>{
   axios.delete(`https://expense-tracker-2-eed66-default-rtdb.firebaseio.com/expenses/${id}.json`).then((res)=>{
-    setExpenses((prevExpenses)=>{
-      return prevExpenses.filter((expense)=>expense.id !== id)
-    })
+    const updatedExpenses = expenses.filter((expense) => expense.id !== id);
+    dispatch(ExpenseActions.setExpenses(updatedExpenses))
+
   })
 }
 
@@ -45,12 +46,12 @@ const deleteHandler=(id)=>{
         for (const key in res.data) {
           loadedExpenses.push({ id: key, ...res.data[key] });
         }
-        setExpenses(loadedExpenses);
+       dispatch(ExpenseActions.setExpenses(loadedExpenses))
       })
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [dispatch]);
 
   const submitHandler = (e) => {
     e.preventDefault();
@@ -68,9 +69,10 @@ const deleteHandler=(id)=>{
         details
       )
       .then((res) => {
-        setExpenses((prevdetails) => {
-          return [...prevdetails, { id: res.data.name, ...details }];
-        });
+        const newExpense = { id: res.data.name, ...details };
+        const updatedExpenses = [...expenses, newExpense];
+        dispatch(ExpenseActions.setExpenses(updatedExpenses))
+
       })
       .catch((err) => {
         console.log(err);
