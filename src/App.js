@@ -18,6 +18,7 @@ const router = createBrowserRouter([
   {path:'/expenses',element:<Expenses/>}
 ]);
 function App() {
+   
   return (
     <div className="App">
       <RouterProvider router={router}></RouterProvider>

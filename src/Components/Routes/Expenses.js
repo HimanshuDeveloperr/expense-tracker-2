@@ -4,6 +4,7 @@ import ExpensesList from "./ExpensesList";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { ExpenseActions } from "../ReduxStore/ExpenseReducer";
+import { ThemeActions } from "../ReduxStore/ThemeReducer";
 
 const Expenses = () => {
   const moneyref = useRef();
@@ -13,6 +14,8 @@ const Expenses = () => {
 
   const expenses=useSelector(state=>state.expense.Expenses)
   const total=useSelector(state=>state.expense.total)
+  const isDarkTheme = useSelector((state) => state.theme.isDarkTheme);
+  const premium=useSelector(state=>state.theme.premium)
 
   const saveHandler=(newexpense)=>{
 
@@ -79,9 +82,21 @@ const deleteHandler=(id)=>{
         console.log(err);
       });
   };
+
+  const themeClass=isDarkTheme?"dark-theme":"light-theme"
+  const handleThemeToggle=()=>{
+    if (!isDarkTheme && total > 10000) {
+      dispatch(ThemeActions.toggleTheme());
+    }
+  }
+
+  const toggler=()=>{
+    dispatch(ThemeActions.toggle());
+  }
+  
   
   return (
-    <div className="container">
+    <div className={`container ${themeClass}`}>
       <form onSubmit={submitHandler}>
         <label htmlFor="money">Money Spent:</label>
         <input type="text" id="money" name="money" ref={moneyref} />
@@ -107,7 +122,10 @@ const deleteHandler=(id)=>{
       <div>
         <ExpensesList expenses={expenses} onDelete={deleteHandler} onEdit={saveHandler} />
       </div>
-      {total > 10000 && <button className="btn btn-success">Activate Premium</button>}
+      {total > 10000 && !premium && <button className="btn btn-success" onClick={handleThemeToggle}>Activate Premium</button>}
+      {premium && <button className={`toggle-button `} onClick={toggler}>
+  Toggle Theme
+</button>}
     </div>
   );
 };
