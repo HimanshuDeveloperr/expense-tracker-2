@@ -94,7 +94,24 @@ const deleteHandler=(id)=>{
     dispatch(ThemeActions.toggle());
   }
   
-  
+
+  const data = expenses.map((expense) => [
+    expense.description,
+    expense.category,
+    expense.money,
+  ]);
+
+  const makeCSV = (rows) => {
+    return rows.map((r) => r.join(',')).join('\n');
+  };
+
+  const DownloadExpenses = () => {
+    const csvContent = makeCSV(data);
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    window.open(url);
+  };
+
   return (
     <div className={`container ${themeClass}`}>
       <form onSubmit={submitHandler}>
@@ -126,6 +143,9 @@ const deleteHandler=(id)=>{
       {premium && <button className={`toggle-button `} onClick={toggler}>
   Toggle Theme
 </button>}
+<div>
+  <button id="a1" onClick={DownloadExpenses}>Download file</button>
+</div>
     </div>
   );
 };
